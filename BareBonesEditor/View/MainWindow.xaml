@@ -4,15 +4,23 @@
         xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
         Title="Éditeur d'examen" Height="600" Width="800"
         WindowStyle="SingleBorderWindow" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen"
-        Background="#2B2B2B">
+        Background="#BBA091">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Button Content="Sauvegarder" Grid.Row="0" Margin="5" Padding="5 2"
-                HorizontalAlignment="Right" Width="100" Command="{Binding SaveCommand}"/>
+        <Button Content="Sauvegarder" 
+                Grid.Row="0" 
+                Margin="5" 
+                Padding="5 2"
+                HorizontalAlignment="Right" 
+                Width="100"
+                Background="#918765"
+                Foreground="#2B2B2B"
+                Command="{Binding SaveCommand}"/>
+        <TextBlock Text="{Binding SaveMessage, UpdateSourceTrigger=PropertyChanged}" Foreground="Green" HorizontalAlignment="Center" Margin="10"/>
 
         <avalonEdit:TextEditor x:Name="editor"
                                Grid.Row="1"
@@ -24,7 +32,7 @@
                                Foreground="#2B2B2B"
                                IsReadOnly="False"
                                VerticalScrollBarVisibility="Visible"
-                               HorizontalScrollBarVisibility="Visible" />
+                               HorizontalScrollBarVisibility="Visible"/>
     </Grid>
 </Window>
 

@@ -13,22 +13,39 @@ using ICSharpCode.AvalonEdit.Highlighting;
 
 namespace BareBonesEditor.ViewModel
 {
-    class MainViewModel
+    class MainViewModel : INotifyPropertyChanged
     {
         public static string FilePath
         {
             get { return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "BareBonesEditor", "exam.cs"); ; }
         }
 
+        private string _saveMessage = "";
+        public string SaveMessage
+        {
+            get => _saveMessage;
+            set
+            {
+                _saveMessage = value;
+                OnPropertyChanged(nameof(SaveMessage));
+            }
+        }
+
         private readonly TextEditor _editor;
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        public ICommand SaveCommand { get; set; }
 
         public MainViewModel(TextEditor editor)
         {
             _editor = editor;
             SaveCommand = new RelayCommand(SaveFile);
-
             editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("C#");
+            LoadExamFile();
+        }
 
+        private void LoadExamFile()
+        {
             var directory = Path.GetDirectoryName(FilePath);
             if (!Directory.Exists(directory))
             {
@@ -37,19 +54,37 @@ namespace BareBonesEditor.ViewModel
 
             if (File.Exists(FilePath))
             {
-                editor.Load(FilePath);
+                _editor.Load(FilePath);
             }
             else
             {
-                File.WriteAllText(FilePath, ""); 
+                File.WriteAllText(FilePath, "");
             }
         }
-
-        public ICommand SaveCommand { get; set; }
 
         private void SaveFile()
         {
             File.WriteAllText(FilePath, _editor.Text);
+            SaveMessage = "Fichier sauvegardé!";
+            ShowTemporarySaveMessage();
+
+        }
+
+        private void ShowTemporarySaveMessage()
+        {
+            var timer = new System.Timers.Timer(3000);
+            timer.Elapsed += (s, e) =>
+            {
+                timer.Stop();
+                timer.Dispose();
+                SaveMessage = "";
+            };
+            timer.AutoReset = false;
+            timer.Start();
+        }
+        private void OnPropertyChanged(string propName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
     }
 }
