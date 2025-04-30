@@ -17,7 +17,7 @@ namespace BareBonesEditor.ViewModel
     {
         public static string FilePath
         {
-            get { return "exam.cs"; }
+            get { return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "BareBonesEditor", "exam.cs"); ; }
         }
 
         private readonly TextEditor _editor;
@@ -29,9 +29,19 @@ namespace BareBonesEditor.ViewModel
 
             editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("C#");
 
+            var directory = Path.GetDirectoryName(FilePath);
+            if (!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+
             if (File.Exists(FilePath))
             {
                 editor.Load(FilePath);
+            }
+            else
+            {
+                File.WriteAllText(FilePath, ""); 
             }
         }
 
