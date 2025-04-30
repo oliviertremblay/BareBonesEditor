@@ -1,5 +1,5 @@
 [Setup]
-AppName=person-wpf-demo
+AppName=BareBonesEditor
 AppVersion=1.0.0
 DefaultDirName={pf}\BareBonesEditor
 DefaultGroupName=BareBonesEditor
