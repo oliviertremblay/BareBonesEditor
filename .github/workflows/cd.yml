@@ -1,0 +1,40 @@
+name: Déploiement en continu
+
+on:
+    push:
+      tags:
+      - 'V*'
+
+jobs:
+  publish:
+    runs-on: windows-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Publish WPF app
+      run: >
+        dotnet publish BareBonesEditor/BareBonesEditor.csproj
+        --configuration Release
+        --runtime win-x64
+        --self-contained true
+        --output publish
+
+    - name: Generate installer with Inno Setup
+      uses: Minionguyjpro/Inno-Setup-Action@v1.2.5
+      with:
+        path: installer/setup.iss
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v2
+      with:
+        name: Release ${{ github.ref_name }}
+        tag_name: ${{ github.ref_name }}
+        files: installer/setup.exe
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
