@@ -1,8 +1,8 @@
 [Setup]
 AppName=person-wpf-demo
 AppVersion=1.0.0
-DefaultDirName={pf}\person-wpf-demo
-DefaultGroupName=person-wpf-demo
+DefaultDirName={pf}\BareBonesEditor
+DefaultGroupName=BareBonesEditor
 OutputBaseFilename=setup
 OutputDir=.
 Compression=lzma
@@ -12,7 +12,7 @@ SolidCompression=yes
 Source: "..\publish\*"; DestDir: "{app}"; Flags: recursesubdirs
 
 [Icons]
-Name: "{group}\person-wpf-demo"; Filename: "{app}\person-wpf-demo.exe"
+Name: "{group}\BareBonesEditor"; Filename: "{app}\BareBonesEditor.exe"
 
 [Run]
-Filename: "{app}\person-wpf-demo.exe"; Description: "Lancer person-wpf-demo"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\BareBonesEditor.exe"; Description: "Lancer BareBonesEditor"; Flags: nowait postinstall skipifsilent
